@@ -8,6 +8,11 @@ void print_build_information()
     std::cout << "Binary compiled on: " << BUILD_DATE << '\n';
 }
 
+void rename_file(const std::filesystem::path &filepath)
+{
+    std::cout << filepath << '\n';
+}
+
 void process_directory()
 {
     const std::filesystem::path cwd = std::filesystem::current_path();
@@ -17,6 +22,11 @@ void process_directory()
     {
         std::cout << "Directory is empty!\n";
         return;
+    }
+
+    for (auto const &target : std::filesystem::directory_iterator{cwd})
+    {
+        rename_file(target.path());
     }
 }
 
