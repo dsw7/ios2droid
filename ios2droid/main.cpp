@@ -53,7 +53,7 @@ void rename_file(const std::filesystem::path &filepath)
 {
     static std::regex pattern("^IMG_\\d+$");
 
-    if (not std::regex_match(filepath.stem().string(), pattern))
+    if (!std::regex_match(filepath.stem().string(), pattern))
     {
         return;
     }
