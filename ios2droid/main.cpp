@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -50,6 +51,13 @@ bool parse_exif_data(const std::filesystem::path &filepath)
 
 void rename_file(const std::filesystem::path &filepath)
 {
+    static std::regex pattern("^IMG_\\d+$");
+
+    if (not std::regex_match(filepath.stem().string(), pattern))
+    {
+        return;
+    }
+
     std::cout << filepath << '\n';
     parse_exif_data(filepath);
 }
