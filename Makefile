@@ -28,4 +28,4 @@ lint:
 	@cppcheck ios2droid --enable=all
 
 format:
-	@clang-format -i --verbose --style=file ios2droid/src/*.cpp ios2droid/include/*.hpp
+	@clang-format -i --verbose --style=file ios2droid/*.cpp
