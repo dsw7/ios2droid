@@ -6,3 +6,6 @@ __pycache__/
 
 # Ignore venv (needed for python tests)
 venv
+
+# Ignore easyexif
+libs

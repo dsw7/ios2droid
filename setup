@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mkdir -vp ios2droid/libs
+
+base_url="https://raw.githubusercontent.com/mayanklahiri/easyexif/refs/heads/master"
+
+curl "$base_url/exif.cpp" -o ios2droid/libs/exif.cpp
+curl "$base_url/exif.h" -o ios2droid/libs/exif.h

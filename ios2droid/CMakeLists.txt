@@ -20,9 +20,13 @@ if(NOT fmt_FOUND)
   message(FATAL_ERROR "Is the {fmt} package installed?")
 endif()
 
+include_directories(
+  "libs"
+)
 add_executable(
   "ios2droid"
   "main.cpp"
+  "libs/exif.cpp"
 )
 target_link_libraries(
   "ios2droid"
