@@ -27,3 +27,13 @@ std::vector<unsigned char> load_file_into_buffer(const std::filesystem::path &fi
 
     return buffer;
 }
+
+namespace easyexif_error_codes
+{
+
+const int PARSE_EXIF_ERROR_NO_JPEG = 1982;
+const int PARSE_EXIF_ERROR_NO_EXIF = 1983;
+const int PARSE_EXIF_ERROR_UNKNOWN_BYTEALIGN = 1984;
+const int PARSE_EXIF_ERROR_CORRUPT = 1985;
+
+} // namespace easyexif_error_codes
