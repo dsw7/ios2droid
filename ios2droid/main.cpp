@@ -1,6 +1,5 @@
 #include "help.hpp"
 #include "inspect.hpp"
-#include "parse_exif.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -17,7 +16,6 @@ void rename_file(const std::filesystem::path &filepath)
     }
 
     std::cout << filepath << '\n';
-    parse_all_data_from_exif(filepath);
 }
 
 void process_directory()
