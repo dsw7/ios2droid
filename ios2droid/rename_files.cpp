@@ -12,7 +12,13 @@
 namespace
 {
 
-bool parse_date_taken_from_exif(const std::filesystem::path &filepath, std::string &date_taken)
+struct Payload
+{
+    std::string date_taken;
+    std::string make;
+};
+
+bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &payload)
 {
     std::vector<unsigned char> buffer = load_file_into_buffer(filepath);
 
@@ -50,13 +56,17 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, std::stri
         return false;
     }
 
-    date_taken = exif_info.DateTimeOriginal;
+    payload.date_taken = exif_info.DateTimeOriginal;
+    payload.make = exif_info.Make;
+
     return true;
 }
 
 void rename_file(const std::filesystem::path &filepath)
 {
     static std::regex pattern("^IMG_\\d+$");
+
+    std::cout << fmt::format("\n> Processing file {}\n", filepath.filename().string());
 
     if (!std::regex_match(filepath.stem().string(), pattern))
     {
@@ -65,14 +75,15 @@ void rename_file(const std::filesystem::path &filepath)
         return;
     }
 
-    std::string date_taken;
+    Payload payload;
 
-    if (not parse_date_taken_from_exif(filepath, date_taken))
+    if (not parse_date_taken_from_exif(filepath, payload))
     {
         return;
     }
 
-    std::cout << "Date Taken: " << date_taken << '\n';
+    std::cout << "Date Taken: " << payload.date_taken << '\n';
+    std::cout << "Make: " << payload.make << '\n';
 }
 
 } // namespace
