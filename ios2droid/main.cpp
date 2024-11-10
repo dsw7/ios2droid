@@ -1,15 +1,10 @@
+#include "help.hpp"
 #include "parse_exif.hpp"
 
 #include <filesystem>
 #include <iostream>
 #include <regex>
 #include <string>
-
-void print_build_information()
-{
-    std::cout << "Project version: " << PROJECT_VERSION << '\n';
-    std::cout << "Binary compiled on: " << BUILD_DATE << '\n';
-}
 
 void rename_file(const std::filesystem::path &filepath)
 {
@@ -41,9 +36,20 @@ void process_directory()
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    print_build_information();
-    process_directory();
+    if (argc < 2)
+    {
+        process_directory();
+        return 0;
+    }
+
+    std::string arg_1 = argv[1];
+
+    if (arg_1.compare("--help") == 0 or arg_1.compare("-h") == 0)
+    {
+        print_summary();
+    }
+
     return 0;
 }
