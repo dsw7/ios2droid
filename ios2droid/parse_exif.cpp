@@ -2,29 +2,45 @@
 
 #include "exif.h"
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
-bool parse_date_taken_from_exif(const std::filesystem::path &filepath)
+namespace
 {
-    std::ifstream file(filepath, std::ios::binary | std::ios::ate);
 
+std::vector<unsigned char> load_file_into_buffer(const std::filesystem::path &filepath)
+{
+    std::vector<unsigned char> buffer;
+
+    std::ifstream file(filepath, std::ios::binary | std::ios::ate);
     if (!file.is_open())
     {
         std::cerr << "Failed to open file: " << filepath << '\n';
-        return false;
+        return buffer;
     }
 
     std::streamsize size_file = file.tellg();
     file.seekg(0, std::ios::beg);
 
-    std::vector<unsigned char> buffer;
     buffer.resize(size_file);
 
     if (!file.read(reinterpret_cast<char *>(buffer.data()), size_file))
     {
         std::cerr << "Failed to read file: " << filepath << '\n';
+    }
+
+    return buffer;
+}
+
+} // namespace
+
+bool parse_date_taken_from_exif(const std::filesystem::path &filepath)
+{
+    std::vector<unsigned char> buffer = load_file_into_buffer(filepath);
+
+    if (buffer.empty())
+    {
         return false;
     }
 
