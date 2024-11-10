@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <iostream>
 #include <regex>
+#include <stdexcept>
 #include <string>
 
 void rename_file(const std::filesystem::path &filepath)
@@ -51,6 +52,15 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    inspect_file(arg_1);
+    try
+    {
+        inspect_file(arg_1);
+    }
+    catch (const std::runtime_error &error)
+    {
+        std::cerr << error.what() << '\n';
+        return 1;
+    }
+
     return 0;
 }

@@ -6,12 +6,13 @@
 #include <filesystem>
 #include <fmt/core.h>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 namespace
 {
 
-void parse_all_exif_metadata(const std::vector<unsigned char> &buffer)
+void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std::string &filename)
 {
     easyexif::EXIFInfo exif_info;
 
@@ -19,10 +20,11 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer)
 
     if (rv != 0)
     {
-        std::cerr << "Error parsing EXIF: code " << rv << '\n';
-        return;
+        throw std::runtime_error(fmt::format("Failed to parse EXIF. The code was {}", rv));
     }
 
+    std::cout << std::string(50, '-') << '\n';
+    std::cout << "Filename             : " << filename << '\n';
     std::cout << "Camera make          : " << exif_info.Make << '\n';
     std::cout << "Camera model         : " << exif_info.Model << '\n';
     std::cout << "Software             : " << exif_info.Software << '\n';
@@ -56,35 +58,31 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer)
     std::cout << "Lens model           : " << exif_info.LensInfo.Model << '\n';
     std::cout << "Focal plane XRes     : " << exif_info.LensInfo.FocalPlaneXResolution << '\n';
     std::cout << "Focal plane YRes     : " << exif_info.LensInfo.FocalPlaneYResolution << '\n';
+    std::cout << std::string(50, '-') << '\n';
 }
 
 } // namespace
 
-void inspect_file(const std::string &file)
+void inspect_file(const std::string &file_s)
 {
-    std::filesystem::path filename = file;
+    std::filesystem::path file_p = file_s;
 
-    if (not std::filesystem::exists(filename))
+    if (not std::filesystem::exists(file_p))
     {
-        std::cerr << fmt::format("File '{}' does not exist\n", file);
-        return;
+        throw std::runtime_error(fmt::format("File '{}' does not exist", file_s));
     }
 
-    if (not std::filesystem::is_regular_file(filename))
+    if (not std::filesystem::is_regular_file(file_p))
     {
-        std::cerr << fmt::format("File '{}' is not a regular file\n", file);
-        return;
+        throw std::runtime_error(fmt::format("File '{}' is not a regular file", file_s));
     }
 
-    std::vector<unsigned char> buffer = load_file_into_buffer(filename);
+    std::vector<unsigned char> buffer = load_file_into_buffer(file_p);
 
     if (buffer.empty())
     {
-        return;
+        throw std::runtime_error("File is empty");
     }
 
-    std::cout << std::string(50, '-') << '\n';
-    std::cout << "Filename             : " << filename.filename() << '\n';
-    parse_all_exif_metadata(buffer);
-    std::cout << std::string(50, '-') << '\n';
+    parse_all_exif_metadata(buffer, file_s);
 }
