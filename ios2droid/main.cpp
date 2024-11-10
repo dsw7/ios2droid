@@ -21,7 +21,7 @@ void rename_file(const std::filesystem::path &filepath)
     }
 
     std::cout << filepath << '\n';
-    parse_date_taken_from_exif(filepath);
+    parse_all_data_from_exif(filepath);
 }
 
 void process_directory()
