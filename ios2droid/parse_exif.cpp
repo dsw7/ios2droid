@@ -78,19 +78,20 @@ bool parse_all_data_from_exif(const std::filesystem::path &filepath)
     }
 
     std::cout << std::string(50, '-') << '\n';
-    std::cout << "Camera make          : " << exif_info.Make.c_str() << '\n';
-    std::cout << "Camera model         : " << exif_info.Model.c_str() << '\n';
-    std::cout << "Software             : " << exif_info.Software.c_str() << '\n';
+    std::cout << "Filename             : " << filepath.filename() << '\n';
+    std::cout << "Camera make          : " << exif_info.Make << '\n';
+    std::cout << "Camera model         : " << exif_info.Model << '\n';
+    std::cout << "Software             : " << exif_info.Software << '\n';
     std::cout << "Bits per sample      : " << exif_info.BitsPerSample << '\n';
     std::cout << "Image width          : " << exif_info.ImageWidth << '\n';
     std::cout << "Image height         : " << exif_info.ImageHeight << '\n';
-    std::cout << "Image description    : " << exif_info.ImageDescription.c_str() << '\n';
+    std::cout << "Image description    : " << exif_info.ImageDescription << '\n';
     std::cout << "Image orientation    : " << exif_info.Orientation << '\n';
-    std::cout << "Image copyright      : " << exif_info.Copyright.c_str() << '\n';
-    std::cout << "Image date/time      : " << exif_info.DateTime.c_str() << '\n';
-    std::cout << "Original date/time   : " << exif_info.DateTimeOriginal.c_str() << '\n';
-    std::cout << "Digitize date/time   : " << exif_info.DateTimeDigitized.c_str() << '\n';
-    std::cout << "Subsecond time       : " << exif_info.SubSecTimeOriginal.c_str() << '\n';
+    std::cout << "Image copyright      : " << exif_info.Copyright << '\n';
+    std::cout << "Image date/time      : " << exif_info.DateTime << '\n';
+    std::cout << "Original date/time   : " << exif_info.DateTimeOriginal << '\n';
+    std::cout << "Digitize date/time   : " << exif_info.DateTimeDigitized << '\n';
+    std::cout << "Subsecond time       : " << exif_info.SubSecTimeOriginal << '\n';
     std::cout << "Exposure time        : 1/" << (unsigned)(1.0 / exif_info.ExposureTime) << " s\n";
     std::cout << "F-stop               : f/" << exif_info.FNumber << '\n';
     std::cout << "Exposure program     : " << exif_info.ExposureProgram << '\n';
@@ -107,8 +108,8 @@ bool parse_all_data_from_exif(const std::filesystem::path &filepath)
     std::cout << "Lens max focal length: " << exif_info.LensInfo.FocalLengthMax << " mm\n";
     std::cout << "Lens f-stop min      : f/" << exif_info.LensInfo.FStopMin << '\n';
     std::cout << "Lens f-stop max      : f/" << exif_info.LensInfo.FStopMax << '\n';
-    std::cout << "Lens make            : " << exif_info.LensInfo.Make.c_str() << '\n';
-    std::cout << "Lens model           : " << exif_info.LensInfo.Model.c_str() << '\n';
+    std::cout << "Lens make            : " << exif_info.LensInfo.Make << '\n';
+    std::cout << "Lens model           : " << exif_info.LensInfo.Model << '\n';
     std::cout << "Focal plane XRes     : " << exif_info.LensInfo.FocalPlaneXResolution << '\n';
     std::cout << "Focal plane YRes     : " << exif_info.LensInfo.FocalPlaneYResolution << '\n';
     std::cout << std::string(50, '-') << '\n';
