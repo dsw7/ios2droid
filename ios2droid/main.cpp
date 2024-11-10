@@ -13,7 +13,7 @@ void print_build_information()
     std::cout << "Binary compiled on: " << BUILD_DATE << '\n';
 }
 
-bool parse_exif_data(const std::filesystem::path &filepath)
+bool parse_date_taken_from_exif(const std::filesystem::path &filepath)
 {
     std::ifstream file(filepath, std::ios::binary | std::ios::ate);
 
@@ -59,7 +59,7 @@ void rename_file(const std::filesystem::path &filepath)
     }
 
     std::cout << filepath << '\n';
-    parse_exif_data(filepath);
+    parse_date_taken_from_exif(filepath);
 }
 
 void process_directory()
