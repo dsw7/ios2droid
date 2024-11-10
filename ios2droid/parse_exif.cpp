@@ -78,47 +78,39 @@ bool parse_all_data_from_exif(const std::filesystem::path &filepath)
     }
 
     std::cout << std::string(50, '-') << '\n';
-    printf("Camera make          : %s\n", exif_info.Make.c_str());
-    printf("Camera model         : %s\n", exif_info.Model.c_str());
-    printf("Software             : %s\n", exif_info.Software.c_str());
-    printf("Bits per sample      : %d\n", exif_info.BitsPerSample);
-    printf("Image width          : %d\n", exif_info.ImageWidth);
-    printf("Image height         : %d\n", exif_info.ImageHeight);
-    printf("Image description    : %s\n", exif_info.ImageDescription.c_str());
-    printf("Image orientation    : %d\n", exif_info.Orientation);
-    printf("Image copyright      : %s\n", exif_info.Copyright.c_str());
-    printf("Image date/time      : %s\n", exif_info.DateTime.c_str());
-    printf("Original date/time   : %s\n", exif_info.DateTimeOriginal.c_str());
-    printf("Digitize date/time   : %s\n", exif_info.DateTimeDigitized.c_str());
-    printf("Subsecond time       : %s\n", exif_info.SubSecTimeOriginal.c_str());
-    printf("Exposure time        : 1/%d s\n", (unsigned)(1.0 / exif_info.ExposureTime));
-    printf("F-stop               : f/%.1f\n", exif_info.FNumber);
-    printf("Exposure program     : %d\n", exif_info.ExposureProgram);
-    printf("ISO speed            : %d\n", exif_info.ISOSpeedRatings);
-    printf("Subject distance     : %f m\n", exif_info.SubjectDistance);
-    printf("Exposure bias        : %f EV\n", exif_info.ExposureBiasValue);
-    printf("Flash used?          : %d\n", exif_info.Flash);
-    printf("Flash returned light : %d\n", exif_info.FlashReturnedLight);
-    printf("Flash mode           : %d\n", exif_info.FlashMode);
-    printf("Metering mode        : %d\n", exif_info.MeteringMode);
-    printf("Lens focal length    : %f mm\n", exif_info.FocalLength);
-    printf("35mm focal length    : %u mm\n", exif_info.FocalLengthIn35mm);
-    printf("GPS Latitude         : %f deg (%f deg, %f min, %f sec %c)\n", exif_info.GeoLocation.Latitude,
-           exif_info.GeoLocation.LatComponents.degrees, exif_info.GeoLocation.LatComponents.minutes,
-           exif_info.GeoLocation.LatComponents.seconds, exif_info.GeoLocation.LatComponents.direction);
-    printf("GPS Longitude        : %f deg (%f deg, %f min, %f sec %c)\n", exif_info.GeoLocation.Longitude,
-           exif_info.GeoLocation.LonComponents.degrees, exif_info.GeoLocation.LonComponents.minutes,
-           exif_info.GeoLocation.LonComponents.seconds, exif_info.GeoLocation.LonComponents.direction);
-    printf("GPS Altitude         : %f m\n", exif_info.GeoLocation.Altitude);
-    printf("GPS Precision (DOP)  : %f\n", exif_info.GeoLocation.DOP);
-    printf("Lens min focal length: %f mm\n", exif_info.LensInfo.FocalLengthMin);
-    printf("Lens max focal length: %f mm\n", exif_info.LensInfo.FocalLengthMax);
-    printf("Lens f-stop min      : f/%.1f\n", exif_info.LensInfo.FStopMin);
-    printf("Lens f-stop max      : f/%.1f\n", exif_info.LensInfo.FStopMax);
-    printf("Lens make            : %s\n", exif_info.LensInfo.Make.c_str());
-    printf("Lens model           : %s\n", exif_info.LensInfo.Model.c_str());
-    printf("Focal plane XRes     : %f\n", exif_info.LensInfo.FocalPlaneXResolution);
-    printf("Focal plane YRes     : %f\n", exif_info.LensInfo.FocalPlaneYResolution);
+    std::cout << "Camera make          : " << exif_info.Make.c_str() << '\n';
+    std::cout << "Camera model         : " << exif_info.Model.c_str() << '\n';
+    std::cout << "Software             : " << exif_info.Software.c_str() << '\n';
+    std::cout << "Bits per sample      : " << exif_info.BitsPerSample << '\n';
+    std::cout << "Image width          : " << exif_info.ImageWidth << '\n';
+    std::cout << "Image height         : " << exif_info.ImageHeight << '\n';
+    std::cout << "Image description    : " << exif_info.ImageDescription.c_str() << '\n';
+    std::cout << "Image orientation    : " << exif_info.Orientation << '\n';
+    std::cout << "Image copyright      : " << exif_info.Copyright.c_str() << '\n';
+    std::cout << "Image date/time      : " << exif_info.DateTime.c_str() << '\n';
+    std::cout << "Original date/time   : " << exif_info.DateTimeOriginal.c_str() << '\n';
+    std::cout << "Digitize date/time   : " << exif_info.DateTimeDigitized.c_str() << '\n';
+    std::cout << "Subsecond time       : " << exif_info.SubSecTimeOriginal.c_str() << '\n';
+    std::cout << "Exposure time        : 1/" << (unsigned)(1.0 / exif_info.ExposureTime) << " s\n";
+    std::cout << "F-stop               : f/" << exif_info.FNumber << '\n';
+    std::cout << "Exposure program     : " << exif_info.ExposureProgram << '\n';
+    std::cout << "ISO speed            : " << exif_info.ISOSpeedRatings << '\n';
+    std::cout << "Subject distance     : " << exif_info.SubjectDistance << " m\n";
+    std::cout << "Exposure bias        : " << exif_info.ExposureBiasValue << " EV\n";
+    std::cout << "Flash used?          : " << exif_info.Flash << '\n';
+    std::cout << "Flash returned light : " << exif_info.FlashReturnedLight << '\n';
+    std::cout << "Flash mode           : " << exif_info.FlashMode << '\n';
+    std::cout << "Metering mode        : " << exif_info.MeteringMode << '\n';
+    std::cout << "Lens focal length    : " << exif_info.FocalLength << " mm\n";
+    std::cout << "35mm focal length    : " << exif_info.FocalLengthIn35mm << " mm\n";
+    std::cout << "Lens min focal length: " << exif_info.LensInfo.FocalLengthMin << " mm\n";
+    std::cout << "Lens max focal length: " << exif_info.LensInfo.FocalLengthMax << " mm\n";
+    std::cout << "Lens f-stop min      : f/" << exif_info.LensInfo.FStopMin << '\n';
+    std::cout << "Lens f-stop max      : f/" << exif_info.LensInfo.FStopMax << '\n';
+    std::cout << "Lens make            : " << exif_info.LensInfo.Make.c_str() << '\n';
+    std::cout << "Lens model           : " << exif_info.LensInfo.Model.c_str() << '\n';
+    std::cout << "Focal plane XRes     : " << exif_info.LensInfo.FocalPlaneXResolution << '\n';
+    std::cout << "Focal plane YRes     : " << exif_info.LensInfo.FocalPlaneYResolution << '\n';
     std::cout << std::string(50, '-') << '\n';
 
     return true;
