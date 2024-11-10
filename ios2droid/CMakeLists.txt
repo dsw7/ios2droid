@@ -30,6 +30,7 @@ add_executable(
   "help.cpp"
   "inspect.cpp"
   "parse_exif.cpp"
+  "utils.cpp"
 )
 target_link_libraries(
   "ios2droid"
