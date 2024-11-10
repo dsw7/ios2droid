@@ -1,4 +1,5 @@
 #include "help.hpp"
+#include "inspect.hpp"
 #include "parse_exif.hpp"
 
 #include <filesystem>
@@ -49,7 +50,9 @@ int main(int argc, char **argv)
     if (arg_1.compare("--help") == 0 or arg_1.compare("-h") == 0)
     {
         print_summary();
+        return 0;
     }
 
+    inspect_file(arg_1);
     return 0;
 }

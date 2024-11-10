@@ -26,9 +26,10 @@ include_directories(
 add_executable(
   "ios2droid"
   "main.cpp"
-  "help.cpp"
-  "parse_exif.cpp"
   "libs/exif.cpp"
+  "help.cpp"
+  "inspect.cpp"
+  "parse_exif.cpp"
 )
 target_link_libraries(
   "ios2droid"

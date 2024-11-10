@@ -1,3 +1,5 @@
+#include "help.hpp"
+
 #include <iostream>
 
 namespace
