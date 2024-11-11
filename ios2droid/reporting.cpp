@@ -48,9 +48,19 @@ void unset_target()
     }
 }
 
-void print_to_stdout(const std::string &message)
+void print_info(const std::string &message)
 {
-    std::cout << fmt::format("[{}] {}\n", get_target().value_or("Unset"), message);
+    std::cout << fmt::format("\033[32m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
+}
+
+void print_warning(const std::string &message)
+{
+    std::cerr << fmt::format("\033[33m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
+}
+
+void print_error(const std::string &message)
+{
+    std::cerr << fmt::format("\033[31m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
 }
 
 } // namespace reporting

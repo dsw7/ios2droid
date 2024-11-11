@@ -1,4 +1,5 @@
 #include "rename_files.hpp"
+#include "reporting.hpp"
 #include "utils.hpp"
 
 #include "exif.h"
@@ -35,7 +36,7 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
 
     if (buffer.empty())
     {
-        std::cerr << fmt::format("File '{}' is empty. Doing nothing\n", filepath.filename().string());
+        reporting::print_warning("Skipping file. File is empty");
         return false;
     }
 
@@ -79,6 +80,7 @@ void rename_file(const std::filesystem::path &filepath)
 
     if (!std::regex_match(filepath.stem().string(), pattern))
     {
+        reporting::print_warning("File does not match regex pattern. Skipping file");
         return;
     }
 
@@ -91,13 +93,14 @@ void rename_file(const std::filesystem::path &filepath)
 
     if (payload.make.compare("Apple") != 0)
     {
+        reporting::print_warning("File does not have iOS origin. Skipping file");
         return;
     }
 
     std::string new_filename =
         fmt::format("{}{}", convert_ios_to_android_datefmt(payload.date_taken), filepath.extension().string());
 
-    std::cout << fmt::format("[{}] -> [{}]\n", filepath.filename().string(), new_filename);
+    reporting::print_info(fmt::format("-> {}", new_filename));
 }
 
 } // namespace
@@ -115,6 +118,8 @@ void rename_files()
 
     for (auto const &target : std::filesystem::directory_iterator{cwd})
     {
+        reporting::set_target(target.path().filename().string());
         rename_file(target.path());
+        reporting::unset_target();
     }
 }
