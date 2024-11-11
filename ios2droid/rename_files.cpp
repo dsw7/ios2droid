@@ -8,7 +8,6 @@
 #include <filesystem>
 #include <fmt/core.h>
 #include <iostream>
-#include <regex>
 #include <vector>
 
 namespace
@@ -17,6 +16,7 @@ namespace
 struct Payload
 {
     std::string date_taken;
+    std::string errmsg;
     std::string make;
 };
 
@@ -36,7 +36,7 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
 
     if (buffer.empty())
     {
-        reporting::print_warning("Skipping file. File is empty");
+        payload.errmsg = "Skipping file. File is empty";
         return false;
     }
 
@@ -47,16 +47,16 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
     switch (exif_info.parseFrom(buffer.data(), buffer.size()))
     {
     case PARSE_EXIF_ERROR_NO_JPEG:
-        std::cerr << "No JPEG markers found in buffer. Is this an image file?\n";
+        payload.errmsg = "No JPEG markers found in buffer. Is this an image file?";
         break;
     case PARSE_EXIF_ERROR_NO_EXIF:
-        std::cerr << "Could not find EXIF header in file\n";
+        payload.errmsg = "Could not find EXIF header in file";
         break;
     case PARSE_EXIF_ERROR_UNKNOWN_BYTEALIGN:
-        std::cerr << "Byte alignment specified in EXIF file is unknown\n";
+        payload.errmsg = "Byte alignment specified in EXIF file is unknown";
         break;
     case PARSE_EXIF_ERROR_CORRUPT:
-        std::cerr << "EXIF header found but data is corrupted\n";
+        payload.errmsg = "EXIF header found but data is corrupted";
         break;
     default:
         parse_failed = false;
@@ -76,11 +76,9 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
 
 void rename_file(const std::filesystem::path &filepath)
 {
-    static std::regex pattern("^IMG_\\d+$");
-
-    if (!std::regex_match(filepath.stem().string(), pattern))
+    if (not std::filesystem::is_regular_file(filepath))
     {
-        reporting::print_warning("File does not match regex pattern. Skipping file");
+        reporting::print_error("Not a regular file");
         return;
     }
 
@@ -88,12 +86,13 @@ void rename_file(const std::filesystem::path &filepath)
 
     if (not parse_date_taken_from_exif(filepath, payload))
     {
+        reporting::print_warning(payload.errmsg);
         return;
     }
 
     if (payload.make.compare("Apple") != 0)
     {
-        reporting::print_warning("File does not have iOS origin. Skipping file");
+        reporting::print_warning("File did not originate from iOS device. Skipping file");
         return;
     }
 
@@ -108,7 +107,9 @@ void rename_file(const std::filesystem::path &filepath)
 void rename_files()
 {
     const std::filesystem::path cwd = std::filesystem::current_path();
+
     std::cout << "Will rename files in directory: " << cwd << '\n';
+    print_separator();
 
     if (std::filesystem::is_empty(cwd))
     {
