@@ -2,7 +2,15 @@
 
 #include <fmt/core.h>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
+#include <string>
+
+void print_separator()
+{
+    static std::string separator = std::string('-', 50);
+    std::cout << separator << '\n';
+}
 
 std::vector<unsigned char> load_file_into_buffer(const std::filesystem::path &filepath)
 {

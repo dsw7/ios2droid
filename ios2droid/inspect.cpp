@@ -28,7 +28,7 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std
         throw std::runtime_error("EXIF header found but data is corrupted");
     }
 
-    std::cout << std::string(50, '-') << '\n';
+    print_separator();
     std::cout << "Filename             : " << filename << '\n';
     std::cout << "Camera make          : " << exif_info.Make << '\n';
     std::cout << "Camera model         : " << exif_info.Model << '\n';
@@ -63,7 +63,7 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std
     std::cout << "Lens model           : " << exif_info.LensInfo.Model << '\n';
     std::cout << "Focal plane XRes     : " << exif_info.LensInfo.FocalPlaneXResolution << '\n';
     std::cout << "Focal plane YRes     : " << exif_info.LensInfo.FocalPlaneYResolution << '\n';
-    std::cout << std::string(50, '-') << '\n';
+    print_separator();
 }
 
 } // namespace
