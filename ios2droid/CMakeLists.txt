@@ -20,6 +20,27 @@ if(NOT fmt_FOUND)
   message(FATAL_ERROR "Is the {fmt} package installed?")
 endif()
 
+message(STATUS "Checking for EasyEXIF source files")
+
+set(OUTPUT_CPP "${CMAKE_SOURCE_DIR}/libs/exif.cpp")
+set(OUTPUT_H "${CMAKE_SOURCE_DIR}/libs/exif.h")
+
+if(NOT EXISTS ${OUTPUT_CPP})
+  message(STATUS "Downloading exif.cpp from EasyEXIF source")
+  set(URL_CPP "https://raw.githubusercontent.com/mayanklahiri/easyexif/refs/heads/master/exif.cpp")
+  file(DOWNLOAD ${URL_CPP} ${OUTPUT_CPP} SHOW_PROGRESS)
+else()
+  message(STATUS "exif.cpp already exists, skipping download")
+endif()
+
+if(NOT EXISTS ${OUTPUT_H})
+  message(STATUS "Downloading exif.h from EasyEXIF source")
+  set(URL_H "https://raw.githubusercontent.com/mayanklahiri/easyexif/refs/heads/master/exif.h")
+  file(DOWNLOAD ${URL_H} ${OUTPUT_H} SHOW_PROGRESS)
+else()
+  message(STATUS "exif.h already exists, skipping download")
+endif()
+
 include_directories(
   "libs"
 )
