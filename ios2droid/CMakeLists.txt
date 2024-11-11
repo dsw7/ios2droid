@@ -51,6 +51,7 @@ add_executable(
   "inspect.cpp"
   "libs/exif.cpp"
   "rename_files.cpp"
+  "reporting.cpp"
   "utils.cpp"
 )
 target_link_libraries(
