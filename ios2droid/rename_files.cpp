@@ -3,6 +3,7 @@
 
 #include "exif.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <fmt/core.h>
 #include <iostream>
@@ -17,6 +18,16 @@ struct Payload
     std::string date_taken;
     std::string make;
 };
+
+std::string convert_ios_to_android_datefmt(const std::string &date_ios)
+{
+    std::string date_android = date_ios;
+
+    date_android.erase(std::remove(date_android.begin(), date_android.end(), ':'), date_android.end());
+    std::replace(date_android.begin(), date_android.end(), ' ', '_');
+
+    return date_android;
+}
 
 bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &payload)
 {
@@ -66,12 +77,8 @@ void rename_file(const std::filesystem::path &filepath)
 {
     static std::regex pattern("^IMG_\\d+$");
 
-    std::cout << fmt::format("\n> Processing file {}\n", filepath.filename().string());
-
     if (!std::regex_match(filepath.stem().string(), pattern))
     {
-        std::cout << fmt::format("File '{}' does not match regex ^IMG_\\d+$. Doing nothing\n",
-                                 filepath.filename().string());
         return;
     }
 
@@ -82,8 +89,15 @@ void rename_file(const std::filesystem::path &filepath)
         return;
     }
 
-    std::cout << "Date Taken: " << payload.date_taken << '\n';
-    std::cout << "Make: " << payload.make << '\n';
+    if (payload.make.compare("Apple") != 0)
+    {
+        return;
+    }
+
+    std::string new_filename =
+        fmt::format("{}{}", convert_ios_to_android_datefmt(payload.date_taken), filepath.extension().string());
+
+    std::cout << fmt::format("[{}] -> [{}]\n", filepath.filename().string(), new_filename);
 }
 
 } // namespace
