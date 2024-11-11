@@ -78,7 +78,14 @@ void rename_file(const std::filesystem::path &filepath)
 {
     if (not std::filesystem::is_regular_file(filepath))
     {
-        reporting::print_error("Not a regular file");
+        if (std::filesystem::is_directory(filepath))
+        {
+            reporting::print_error("Is a directory");
+        }
+        else
+        {
+            reporting::print_error("Not a regular file");
+        }
         return;
     }
 
