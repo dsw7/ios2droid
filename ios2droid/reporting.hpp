@@ -2,8 +2,9 @@
 
 #include <string>
 
-namespace reporting {
+namespace reporting
+{
 
-    void set_target(const std::string &filename);
+void set_target(const std::string &filename);
 
 }
