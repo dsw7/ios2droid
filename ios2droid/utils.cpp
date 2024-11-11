@@ -8,7 +8,7 @@
 
 void print_separator()
 {
-    static std::string separator = std::string('-', 50);
+    static std::string separator = std::string(50, '-');
     std::cout << separator << '\n';
 }
 
