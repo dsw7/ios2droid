@@ -128,7 +128,7 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
 
     if (is_dry_run)
     {
-        reporting::print_info(fmt::format("Would have renamed file to: {}", new_file));
+        reporting::print_info(fmt::format("-> {}", new_file));
         return;
     }
 
@@ -139,9 +139,20 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
 
 void rename_files(bool is_dry_run)
 {
+    print_separator();
     const std::filesystem::path cwd = std::filesystem::current_path();
 
-    std::cout << "Will rename files in directory: " << cwd << '\n';
+    if (is_dry_run)
+    {
+        std::cout << "* This is a dry run!\n";
+        std::cout << "* Will NOT rename files in directory: " << cwd << '\n';
+        std::cout << "* Run program with -r or --rename to rename files\n";
+    }
+    else
+    {
+        std::cout << "* Renaming files in directory: " << cwd << '\n';
+    }
+
     print_separator();
 
     if (std::filesystem::is_empty(cwd))
