@@ -74,11 +74,16 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
     return true;
 }
 
-void rename_file(const std::filesystem::path &filepath, bool is_dry_run)
+void rename_file(const std::filesystem::path &old_file, const std::filesystem::path &new_file)
 {
-    if (not std::filesystem::is_regular_file(filepath))
+    std::filesystem::rename(old_file, new_file);
+}
+
+void process_file(const std::filesystem::path &old_file, bool is_dry_run)
+{
+    if (not std::filesystem::is_regular_file(old_file))
     {
-        if (std::filesystem::is_directory(filepath))
+        if (std::filesystem::is_directory(old_file))
         {
             reporting::print_error("Is a directory");
         }
@@ -91,7 +96,7 @@ void rename_file(const std::filesystem::path &filepath, bool is_dry_run)
 
     Payload payload;
 
-    if (not parse_date_taken_from_exif(filepath, payload))
+    if (not parse_date_taken_from_exif(old_file, payload))
     {
         reporting::print_warning(payload.errmsg);
         return;
@@ -104,16 +109,16 @@ void rename_file(const std::filesystem::path &filepath, bool is_dry_run)
     }
 
     std::string android_fmt = convert_ios_to_android_datefmt(payload.date_taken);
-    std::string new_filename = fmt::format("{}{}", android_fmt, filepath.extension().string());
+    std::string new_file = fmt::format("{}{}", android_fmt, old_file.extension().string());
 
     if (is_dry_run)
     {
-        reporting::print_info(fmt::format("Would have renamed file to: {}", new_filename));
+        reporting::print_info(fmt::format("Would have renamed file to: {}", new_file));
+        return;
     }
-    else
-    {
-        reporting::print_info(fmt::format("-> {}", new_filename));
-    }
+
+    reporting::print_info(fmt::format("-> {}", new_file));
+    rename_file(old_file, new_file);
 }
 
 } // namespace
@@ -134,7 +139,7 @@ void rename_files(bool is_dry_run)
     for (auto const &target : std::filesystem::directory_iterator{cwd})
     {
         reporting::set_target(target.path().filename().string());
-        rename_file(target.path(), is_dry_run);
+        process_file(target.path(), is_dry_run);
         reporting::unset_target();
     }
 }
