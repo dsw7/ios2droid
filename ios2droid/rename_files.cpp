@@ -76,11 +76,18 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
 
 void rename_file(const std::filesystem::path &old_file, const std::filesystem::path &new_file)
 {
+    if (std::filesystem::equivalent(old_file, new_file))
+    {
+        reporting::print_info("Filename is already in YYYYMMDD_HHMMSS format");
+        return;
+    }
+
     try
     {
         if (std::filesystem::exists(new_file))
         {
-            reporting::print_info("File already exists");
+            reporting::print_info(fmt::format("'{1}' already exists. Therefore cannot rename '{0}' to '{1}'",
+                                              old_file.filename().string(), new_file.string()));
         }
         else
         {
