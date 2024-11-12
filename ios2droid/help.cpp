@@ -15,7 +15,8 @@ void print_help_messages()
 {
     std::cout << "Usage: ios2droid [OPTIONS] [FILE]\n\n"
                  "Options:\n"
-                 "  -h, --help     Show this help message and exit\n\n"
+                 "  -h, --help     Show this help message and exit\n"
+                 "  -r, --rename   Rename files of iOS origin\n\n"
                  "Arguments:\n"
                  "  FILE           The file to inspect (optional)\n\n"
                  "Description:\n"

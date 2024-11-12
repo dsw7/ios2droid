@@ -9,19 +9,30 @@
 
 void process_input(const std::optional<std::string> &option)
 {
+    bool is_dry_run = true;
+
     if (not option.has_value())
     {
-        rename_files();
+        rename_files(is_dry_run);
         return;
     }
 
-    if (option.value().compare("--help") == 0 or option.value().compare("-h") == 0)
+    std::string file_or_opt = option.value();
+
+    if (file_or_opt.compare("--help") == 0 or file_or_opt.compare("-h") == 0)
     {
         print_summary();
         return;
     }
 
-    inspect_file(option.value());
+    if (file_or_opt.compare("--rename") == 0 or file_or_opt.compare("-r") == 0)
+    {
+        is_dry_run = false;
+        rename_files(is_dry_run);
+        return;
+    }
+
+    inspect_file(file_or_opt);
 }
 
 int main(int argc, char **argv)

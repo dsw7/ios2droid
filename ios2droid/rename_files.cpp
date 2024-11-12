@@ -111,7 +111,7 @@ void rename_file(const std::filesystem::path &filepath)
 
 } // namespace
 
-void rename_files()
+void rename_files(bool is_dry_run)
 {
     const std::filesystem::path cwd = std::filesystem::current_path();
 
@@ -123,6 +123,8 @@ void rename_files()
         std::cout << "Directory is empty!\n";
         return;
     }
+
+    std::cout << is_dry_run;
 
     for (auto const &target : std::filesystem::directory_iterator{cwd})
     {
