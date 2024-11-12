@@ -76,7 +76,22 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
 
 void rename_file(const std::filesystem::path &old_file, const std::filesystem::path &new_file)
 {
-    std::filesystem::rename(old_file, new_file);
+    try
+    {
+        if (std::filesystem::exists(new_file))
+        {
+            reporting::print_info("File already exists");
+        }
+        else
+        {
+            std::filesystem::rename(old_file, new_file);
+            reporting::print_info(fmt::format("-> {}", new_file.string()));
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        reporting::print_error(e.what());
+    }
 }
 
 void process_file(const std::filesystem::path &old_file, bool is_dry_run)
@@ -117,7 +132,6 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
         return;
     }
 
-    reporting::print_info(fmt::format("-> {}", new_file));
     rename_file(old_file, new_file);
 }
 
