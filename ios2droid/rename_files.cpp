@@ -74,7 +74,7 @@ bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &
     return true;
 }
 
-void rename_file(const std::filesystem::path &filepath)
+void rename_file(const std::filesystem::path &filepath, bool is_dry_run)
 {
     if (not std::filesystem::is_regular_file(filepath))
     {
@@ -103,10 +103,17 @@ void rename_file(const std::filesystem::path &filepath)
         return;
     }
 
-    std::string new_filename =
-        fmt::format("{}{}", convert_ios_to_android_datefmt(payload.date_taken), filepath.extension().string());
+    std::string android_fmt = convert_ios_to_android_datefmt(payload.date_taken);
+    std::string new_filename = fmt::format("{}{}", android_fmt, filepath.extension().string());
 
-    reporting::print_info(fmt::format("-> {}", new_filename));
+    if (is_dry_run)
+    {
+        reporting::print_info(fmt::format("Would have renamed file to: {}", new_filename));
+    }
+    else
+    {
+        reporting::print_info(fmt::format("-> {}", new_filename));
+    }
 }
 
 } // namespace
@@ -124,12 +131,10 @@ void rename_files(bool is_dry_run)
         return;
     }
 
-    std::cout << is_dry_run;
-
     for (auto const &target : std::filesystem::directory_iterator{cwd})
     {
         reporting::set_target(target.path().filename().string());
-        rename_file(target.path());
+        rename_file(target.path(), is_dry_run);
         reporting::unset_target();
     }
 }
