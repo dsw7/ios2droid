@@ -3,28 +3,39 @@
 #include "rename_files.hpp"
 
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
-int main(int argc, char **argv)
+void process_input(const std::optional<std::string> &option)
 {
-    if (argc < 2)
+    if (not option.has_value())
     {
         rename_files();
-        return 0;
+        return;
     }
 
-    std::string arg_1 = argv[1];
-
-    if (arg_1.compare("--help") == 0 or arg_1.compare("-h") == 0)
+    if (option.value().compare("--help") == 0 or option.value().compare("-h") == 0)
     {
         print_summary();
-        return 0;
+        return;
+    }
+
+    inspect_file(option.value());
+}
+
+int main(int argc, char **argv)
+{
+    std::optional<std::string> option = std::nullopt;
+
+    if (argc > 1)
+    {
+        option = argv[1];
     }
 
     try
     {
-        inspect_file(arg_1);
+        process_input(option);
     }
     catch (const std::runtime_error &error)
     {
