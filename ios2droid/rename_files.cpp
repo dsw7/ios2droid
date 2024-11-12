@@ -78,7 +78,7 @@ void rename_file(const std::filesystem::path &old_file, const std::filesystem::p
 {
     if (std::filesystem::equivalent(old_file, new_file))
     {
-        reporting::print_info("Filename is already in YYYYMMDD_HHMMSS format");
+        reporting::print_warning("Filename is already in YYYYMMDD_HHMMSS format");
         return;
     }
 
@@ -86,8 +86,8 @@ void rename_file(const std::filesystem::path &old_file, const std::filesystem::p
     {
         if (std::filesystem::exists(new_file))
         {
-            reporting::print_info(fmt::format("'{1}' already exists. Therefore cannot rename '{0}' to '{1}'",
-                                              old_file.filename().string(), new_file.string()));
+            reporting::print_warning(fmt::format("'{1}' already exists. Therefore cannot rename '{0}' to '{1}'",
+                                                 old_file.filename().string(), new_file.string()));
         }
         else
         {
@@ -151,13 +151,13 @@ void rename_files(bool is_dry_run)
 
     if (is_dry_run)
     {
-        std::cout << "* This is a dry run!\n";
-        std::cout << "* Will NOT rename files in directory: " << cwd << '\n';
-        std::cout << "* Run program with -r or --rename to rename files\n";
+        std::cout << "> This is a dry run!\n";
+        std::cout << "> Will NOT rename files in directory: " << cwd << '\n';
+        std::cout << "> Run program with -r or --rename to rename files\n";
     }
     else
     {
-        std::cout << "* Renaming files in directory: " << cwd << '\n';
+        std::cout << "> Renaming files in directory: " << cwd << '\n';
     }
 
     print_separator();
