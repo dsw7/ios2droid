@@ -38,5 +38,6 @@ test: compile
 	@python3 -m unittest -v tests/*.py
 
 py:
-	@python3 -m mypy --strict tests
 	@python3 -m black tests
+	@python3 -m pylint --exit-zero tests
+	@python3 -m mypy --strict tests
