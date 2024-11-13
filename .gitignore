@@ -1,10 +1,11 @@
 build
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache
 
-# Ignore venv (needed for python tests)
+# Unit tests
+*$py.class
+*.py[cod]
+.mypy_cache
+.pytest_cache
+__pycache__/
 venv
 
 # Ignore easyexif
