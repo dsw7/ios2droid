@@ -40,26 +40,19 @@ class TestInspectFile(TestCase):
 
                 self.assertEqual(make, exp_make)
 
-    def test_missing_jpg(self) -> None:
-        process = run(
-            [PATH_BIN, "tests/a_missing_file.jpg"], stdout=DEVNULL, stderr=PIPE
-        )
+    def test_invalid_cases(self) -> None:
+        test_cases = [
+            ("tests/foo.jpg", "File 'tests/foo.jpg' does not exist"),
+            ("tests/jpg_empty.jpg", "File is empty"),
+            (
+                "tests/jpg_fake.jpg",
+                "No JPEG markers found in buffer. Is this an image file?",
+            ),
+        ]
 
-        self.assertNotEqual(process.returncode, EX_OK)
-        self.assertEqual(
-            process.stderr.decode().strip(),
-            "File 'tests/a_missing_file.jpg' does not exist",
-        )
+        for filename, stderr in test_cases:
+            with self.subTest(filename=filename, stderr=stderr):
+                process = run([PATH_BIN, filename], stdout=DEVNULL, stderr=PIPE)
 
-    def test_empty_jpg(self) -> None:
-        process = run([PATH_BIN, "tests/jpg_empty.jpg"], stdout=DEVNULL, stderr=PIPE)
-        self.assertNotEqual(process.returncode, EX_OK)
-        self.assertEqual(process.stderr.decode().strip(), "File is empty")
-
-    def test_fake_jpg(self) -> None:
-        process = run([PATH_BIN, "tests/jpg_fake.jpg"], stdout=DEVNULL, stderr=PIPE)
-        self.assertNotEqual(process.returncode, EX_OK)
-        self.assertEqual(
-            process.stderr.decode().strip(),
-            "No JPEG markers found in buffer. Is this an image file?",
-        )
+                self.assertNotEqual(process.returncode, EX_OK)
+                self.assertEqual(process.stderr.decode().strip(), stderr)
