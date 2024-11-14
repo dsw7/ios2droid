@@ -50,3 +50,8 @@ class TestInspectFile(TestCase):
             process.stderr.decode().strip(),
             "File 'tests/a_missing_file.jpg' does not exist",
         )
+
+    def test_empty_file(self) -> None:
+        process = run([PATH_BIN, "tests/jpg_empty.jpg"], stdout=DEVNULL, stderr=PIPE)
+        self.assertNotEqual(process.returncode, EX_OK)
+        self.assertEqual(process.stderr.decode().strip(), "File is empty")
