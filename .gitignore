@@ -5,6 +5,7 @@ build
 *.py[cod]
 .mypy_cache
 .pytest_cache
+.tmp
 __pycache__/
 venv
 

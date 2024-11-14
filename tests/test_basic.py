@@ -1,4 +1,6 @@
-from os import EX_OK
+from os import EX_OK, chdir
+from pathlib import Path
+from shutil import rmtree, copyfile
 from subprocess import run, DEVNULL, PIPE
 from unittest import TestCase
 
@@ -56,3 +58,27 @@ class TestInspectFile(TestCase):
 
                 self.assertNotEqual(process.returncode, EX_OK)
                 self.assertEqual(process.stderr.decode().strip(), stderr)
+
+
+class TestRename(TestCase):
+    tmpdir = Path(".tmp")
+
+    def setUp(self) -> None:
+        if self.tmpdir.exists():
+            rmtree(self.tmpdir)
+
+        self.tmpdir.mkdir()
+        copyfile("tests/jpg_android.jpg", self.tmpdir / "jpg_android.jpg")
+        copyfile("tests/jpg_apple.jpg", self.tmpdir / "jpg_apple.jpg")
+        chdir(self.tmpdir)
+
+    def tearDown(self) -> None:
+        chdir("..")
+        rmtree(self.tmpdir)
+
+    def test_dry_run(self) -> None:
+        # Set path to build as env var?
+        process = run(["../build/ios2droid"], stdout=DEVNULL, stderr=DEVNULL)
+        self.assertEqual(process.returncode, EX_OK)
+        self.assertTrue(Path("jpg_android.jpg").exists())
+        self.assertTrue(Path("jpg_apple.jpg").exists())
