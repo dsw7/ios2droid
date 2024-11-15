@@ -34,6 +34,7 @@ lint:
 format:
 	@clang-format -i --verbose --style=file ios2droid/*.cpp ios2droid/*.hpp
 
+test: export PATH_BIN = $(CURDIR)/build/ios2droid
 test: compile
 	@python3 -m unittest -v tests/*.py
 

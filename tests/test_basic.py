@@ -1,20 +1,23 @@
-from os import EX_OK, chdir
+from os import EX_OK, chdir, environ
 from pathlib import Path
 from shutil import rmtree, copyfile
 from subprocess import run, DEVNULL, PIPE
-from unittest import TestCase
+from unittest import TestCase, SkipTest
 
-PATH_BIN = "build/ios2droid"
+
+def setUpModule() -> None:
+    if "PATH_BIN" not in environ:
+        raise SkipTest("Environment variable 'PATH_BIN' is required but not set.")
 
 
 class TestHelpMessages(TestCase):
 
     def test_help_short(self) -> None:
-        process = run([PATH_BIN, "-h"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([environ["PATH_BIN"], "-h"], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
 
     def test_help(self) -> None:
-        process = run([PATH_BIN, "--help"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([environ["PATH_BIN"], "--help"], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
 
 
@@ -28,7 +31,9 @@ class TestInspectFile(TestCase):
 
         for filename, exp_make in test_cases:
             with self.subTest(filename=filename, exp_make=exp_make):
-                process = run([PATH_BIN, filename], stdout=PIPE, stderr=DEVNULL)
+                process = run(
+                    [environ["PATH_BIN"], filename], stdout=PIPE, stderr=DEVNULL
+                )
 
                 self.assertEqual(process.returncode, EX_OK)
                 make: str | None = None
@@ -54,7 +59,9 @@ class TestInspectFile(TestCase):
 
         for filename, stderr in test_cases:
             with self.subTest(filename=filename, stderr=stderr):
-                process = run([PATH_BIN, filename], stdout=DEVNULL, stderr=PIPE)
+                process = run(
+                    [environ["PATH_BIN"], filename], stdout=DEVNULL, stderr=PIPE
+                )
 
                 self.assertNotEqual(process.returncode, EX_OK)
                 self.assertEqual(process.stderr.decode().strip(), stderr)
@@ -77,8 +84,7 @@ class TestRename(TestCase):
         rmtree(self.tmpdir)
 
     def test_dry_run(self) -> None:
-        # Set path to build as env var?
-        process = run(["../build/ios2droid"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([environ["PATH_BIN"]], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
         self.assertTrue(Path("jpg_android.jpg").exists())
         self.assertTrue(Path("jpg_apple.jpg").exists())
