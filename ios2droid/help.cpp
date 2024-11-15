@@ -13,16 +13,22 @@ void print_build_information()
 
 void print_help_messages()
 {
-    std::cout << "Usage: ios2droid [OPTIONS] [FILE]\n\n"
-                 "Options:\n"
-                 "  -h, --help     Show this help message and exit\n"
-                 "  -r, --rename   Rename files of iOS origin\n\n"
-                 "Arguments:\n"
-                 "  FILE           The file to inspect (optional)\n\n"
-                 "Description:\n"
-                 "  - Run `ios2droid -h` or `ios2droid --help` to display this help message.\n"
-                 "  - Run `ios2droid FILE` to inspect EXIF metadata associated with a file.\n"
-                 "  - Run `ios2droid` with no arguments rename all files in current directory.\n";
+    std::cout
+        << "Usage: ios2droid [OPTIONS] [FILE]\n\n"
+           "Options:\n"
+           "  -h, --help     Show this help message and exit\n"
+           "  -r, --rename   Rename files of iOS origin\n\n"
+           "Arguments:\n"
+           "  FILE           The file to inspect (optional)\n\n"
+           "Examples:\n"
+           "  - \033[2mios2droid [-h | --help]\033[0m\n"
+           "     > Will display this help message\n"
+           "  - \033[2mios2droid FILE\033[0m\n"
+           "     > To inspect EXIF metadata associated with a file\n"
+           "  - \033[2mios2droid\033[0m (no arguments)\n"
+           "     > Dry run - will print out which files would have been renamed in the current working directory\n"
+           "  - \033[2mios2droid [-r | --rename]\033[0m\n"
+           "     > Rename files in current working directory if satisfied with dry run\n\n";
 }
 
 } // namespace
