@@ -88,3 +88,13 @@ class TestRename(TestCase):
         self.assertEqual(process.returncode, EX_OK)
         self.assertTrue(Path("jpg_android.jpg").exists())
         self.assertTrue(Path("jpg_apple.jpg").exists())
+
+    def test_rename(self) -> None:
+        process = run([environ["PATH_BIN"], "--rename"], stdout=DEVNULL, stderr=DEVNULL)
+        self.assertEqual(process.returncode, EX_OK)
+
+        # Android originating file should retain name
+        self.assertTrue(Path("jpg_android.jpg").exists())
+
+        # Apple originating file should be renamed
+        self.assertTrue(Path("20241113_024948.jpg").exists())
