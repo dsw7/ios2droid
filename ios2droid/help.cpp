@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-namespace
-{
+namespace {
 
 void print_build_information()
 {

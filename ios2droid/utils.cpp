@@ -18,8 +18,7 @@ std::vector<unsigned char> load_file_into_buffer(const std::filesystem::path &fi
 
     std::ifstream file(filepath, std::ios::binary | std::ios::ate);
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::runtime_error(fmt::format("Failed to open file '{}'", filepath.string()));
     }
 
@@ -28,8 +27,7 @@ std::vector<unsigned char> load_file_into_buffer(const std::filesystem::path &fi
 
     buffer.resize(size_file);
 
-    if (!file.read(reinterpret_cast<char *>(buffer.data()), size_file))
-    {
+    if (!file.read(reinterpret_cast<char *>(buffer.data()), size_file)) {
         throw std::runtime_error(fmt::format("Failed to read file '{}'", filepath.string()));
     }
 

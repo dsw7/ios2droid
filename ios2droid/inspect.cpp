@@ -9,23 +9,21 @@
 #include <stdexcept>
 #include <vector>
 
-namespace
-{
+namespace {
 
 void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std::string &filename)
 {
     easyexif::EXIFInfo exif_info;
 
-    switch (exif_info.parseFrom(buffer.data(), buffer.size()))
-    {
-    case PARSE_EXIF_ERROR_NO_JPEG:
-        throw std::runtime_error("No JPEG markers found in buffer. Is this an image file?");
-    case PARSE_EXIF_ERROR_NO_EXIF:
-        throw std::runtime_error("Could not find EXIF header in file");
-    case PARSE_EXIF_ERROR_UNKNOWN_BYTEALIGN:
-        throw std::runtime_error("Byte alignment specified in EXIF file is unknown");
-    case PARSE_EXIF_ERROR_CORRUPT:
-        throw std::runtime_error("EXIF header found but data is corrupted");
+    switch (exif_info.parseFrom(buffer.data(), buffer.size())) {
+        case PARSE_EXIF_ERROR_NO_JPEG:
+            throw std::runtime_error("No JPEG markers found in buffer. Is this an image file?");
+        case PARSE_EXIF_ERROR_NO_EXIF:
+            throw std::runtime_error("Could not find EXIF header in file");
+        case PARSE_EXIF_ERROR_UNKNOWN_BYTEALIGN:
+            throw std::runtime_error("Byte alignment specified in EXIF file is unknown");
+        case PARSE_EXIF_ERROR_CORRUPT:
+            throw std::runtime_error("EXIF header found but data is corrupted");
     }
 
     print_separator();
@@ -72,20 +70,17 @@ void inspect_file(const std::string &file_s)
 {
     std::filesystem::path file_p = file_s;
 
-    if (not std::filesystem::exists(file_p))
-    {
+    if (not std::filesystem::exists(file_p)) {
         throw std::runtime_error(fmt::format("File '{}' does not exist", file_s));
     }
 
-    if (not std::filesystem::is_regular_file(file_p))
-    {
+    if (not std::filesystem::is_regular_file(file_p)) {
         throw std::runtime_error(fmt::format("File '{}' is not a regular file", file_s));
     }
 
     std::vector<unsigned char> buffer = load_file_into_buffer(file_p);
 
-    if (buffer.empty())
-    {
+    if (buffer.empty()) {
         throw std::runtime_error("File is empty");
     }
 
