@@ -1,4 +1,5 @@
 #include "help.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 
@@ -8,6 +9,7 @@ void print_build_information()
 {
     std::cout << "iOS2Droid version: " << PROJECT_VERSION << '\n';
     std::cout << "Compiled on: " << BUILD_DATE << '\n';
+    print_separator();
 }
 
 void print_help_messages()
