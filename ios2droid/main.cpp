@@ -10,10 +10,8 @@
 
 void process_input(const std::optional<std::string> &option)
 {
-    bool is_dry_run = true;
-
     if (not option.has_value()) {
-        rename_files(is_dry_run);
+        rename_files(true);
         return;
     }
 
@@ -24,11 +22,9 @@ void process_input(const std::optional<std::string> &option)
     } else if (file_or_opt == "-h") {
         print_summary();
     } else if (file_or_opt == "--rename") {
-        is_dry_run = false;
-        rename_files(is_dry_run);
+        rename_files(false);
     } else if (file_or_opt == "-r") {
-        is_dry_run = false;
-        rename_files(is_dry_run);
+        rename_files(false);
     } else {
         inspect_file(file_or_opt);
     }
