@@ -1,8 +1,14 @@
+from functools import cache
 from os import EX_OK, chdir, environ
 from pathlib import Path
 from shutil import rmtree, copyfile
 from subprocess import run, DEVNULL, PIPE
 from unittest import TestCase, SkipTest
+
+
+@cache
+def command() -> list[str]:
+    return [environ["PATH_BIN"]]
 
 
 def setUpModule() -> None:
@@ -13,11 +19,11 @@ def setUpModule() -> None:
 class TestHelpMessages(TestCase):
 
     def test_help_short(self) -> None:
-        process = run([environ["PATH_BIN"], "-h"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([*command(), "-h"], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
 
     def test_help(self) -> None:
-        process = run([environ["PATH_BIN"], "--help"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([*command(), "--help"], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
 
 
@@ -31,9 +37,7 @@ class TestInspectFile(TestCase):
 
         for filename, exp_make in test_cases:
             with self.subTest(filename=filename, exp_make=exp_make):
-                process = run(
-                    [environ["PATH_BIN"], filename], stdout=PIPE, stderr=DEVNULL
-                )
+                process = run([*command(), filename], stdout=PIPE, stderr=DEVNULL)
 
                 self.assertEqual(process.returncode, EX_OK)
                 make: str | None = None
@@ -59,9 +63,7 @@ class TestInspectFile(TestCase):
 
         for filename, stderr in test_cases:
             with self.subTest(filename=filename, stderr=stderr):
-                process = run(
-                    [environ["PATH_BIN"], filename], stdout=DEVNULL, stderr=PIPE
-                )
+                process = run([*command(), filename], stdout=DEVNULL, stderr=PIPE)
 
                 self.assertNotEqual(process.returncode, EX_OK)
                 self.assertEqual(process.stderr.decode().strip(), stderr)
@@ -84,13 +86,13 @@ class TestRename(TestCase):
         rmtree(self.tmpdir)
 
     def test_dry_run(self) -> None:
-        process = run([environ["PATH_BIN"]], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([*command()], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
         self.assertTrue(Path("jpg_android.jpg").exists())
         self.assertTrue(Path("jpg_apple.jpg").exists())
 
     def test_rename(self) -> None:
-        process = run([environ["PATH_BIN"], "--rename"], stdout=DEVNULL, stderr=DEVNULL)
+        process = run([*command(), "--rename"], stdout=DEVNULL, stderr=DEVNULL)
         self.assertEqual(process.returncode, EX_OK)
 
         # Android originating file should retain name
