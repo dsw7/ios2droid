@@ -6,6 +6,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 void process_input(const std::optional<std::string> &option)
 {
@@ -16,20 +17,21 @@ void process_input(const std::optional<std::string> &option)
         return;
     }
 
-    std::string file_or_opt = option.value();
+    std::string_view file_or_opt = option.value();
 
-    if (file_or_opt.compare("--help") == 0 or file_or_opt.compare("-h") == 0) {
+    if (file_or_opt == "--help") {
         print_summary();
-        return;
-    }
-
-    if (file_or_opt.compare("--rename") == 0 or file_or_opt.compare("-r") == 0) {
+    } else if (file_or_opt == "-h") {
+        print_summary();
+    } else if (file_or_opt == "--rename") {
         is_dry_run = false;
         rename_files(is_dry_run);
-        return;
+    } else if (file_or_opt == "-r") {
+        is_dry_run = false;
+        rename_files(is_dry_run);
+    } else {
+        inspect_file(file_or_opt);
     }
-
-    inspect_file(file_or_opt);
 }
 
 int main(int argc, char **argv)

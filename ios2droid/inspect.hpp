@@ -1,5 +1,5 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 
-void inspect_file(const std::string &file);
+void inspect_file(std::string_view file);
