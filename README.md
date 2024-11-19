@@ -1,4 +1,6 @@
 # ios2droid
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/dsw7/GPTifier/master/LICENSE)
+
 Image photos originating from iOS devices such as iPhones often have names like:
 ```
 IMG_1728.JPG
