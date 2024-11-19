@@ -7,8 +7,8 @@ This naming scheme provides little meaning. Android names image files using a mo
 ```
 20241113_024948.jpg
 ```
-Which follows `YYYYMMDD_HHMMSS` format. This program renames files from iOS format to Android format
-by interpolating Android style timestamps from file EXIF metadata.
+Which follows `YYYYMMDD_HHMMSS` format. This program renames files from iOS format to Android format by
+interpolating Android style timestamps from file EXIF metadata.
 
 ## Usage
 ### Renaming files
