@@ -68,7 +68,7 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std
 
 void inspect_file(const std::string &file_s)
 {
-    std::filesystem::path file_p = file_s;
+    const std::filesystem::path file_p = file_s;
 
     if (not std::filesystem::exists(file_p)) {
         throw std::runtime_error(fmt::format("File '{}' does not exist", file_s));
@@ -78,7 +78,7 @@ void inspect_file(const std::string &file_s)
         throw std::runtime_error(fmt::format("File '{}' is not a regular file", file_s));
     }
 
-    std::vector<unsigned char> buffer = load_file_into_buffer(file_p);
+    const std::vector<unsigned char> buffer = load_file_into_buffer(file_p);
 
     if (buffer.empty()) {
         throw std::runtime_error("File is empty");

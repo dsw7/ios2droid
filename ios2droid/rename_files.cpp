@@ -30,7 +30,7 @@ std::string convert_ios_to_android_datefmt(const std::string &date_ios)
 
 bool parse_date_taken_from_exif(const std::filesystem::path &filepath, Payload &payload)
 {
-    std::vector<unsigned char> buffer = load_file_into_buffer(filepath);
+    const std::vector<unsigned char> buffer = load_file_into_buffer(filepath);
 
     if (buffer.empty()) {
         payload.errmsg = "Skipping file. File is empty";
@@ -112,8 +112,8 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
         return;
     }
 
-    std::string android_fmt = convert_ios_to_android_datefmt(payload.date_taken);
-    std::string new_file = fmt::format("{}{}", android_fmt, old_file.extension().string());
+    const std::string android_fmt = convert_ios_to_android_datefmt(payload.date_taken);
+    const std::string new_file = fmt::format("{}{}", android_fmt, old_file.extension().string());
 
     if (is_dry_run) {
         reporting::print_info(fmt::format("-> {}", new_file));
