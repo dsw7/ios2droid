@@ -6,7 +6,6 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 
 void process_input(const std::optional<std::string> &option)
 {
@@ -15,7 +14,7 @@ void process_input(const std::optional<std::string> &option)
         return;
     }
 
-    std::string_view file_or_opt = option.value();
+    const std::string file_or_opt = option.value();
 
     if (file_or_opt == "--help") {
         print_summary();

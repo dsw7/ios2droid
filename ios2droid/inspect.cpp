@@ -11,7 +11,7 @@
 
 namespace {
 
-void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, std::string_view filename)
+void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, const std::string &filename)
 {
     easyexif::EXIFInfo exif_info;
 
@@ -66,7 +66,7 @@ void parse_all_exif_metadata(const std::vector<unsigned char> &buffer, std::stri
 
 } // namespace
 
-void inspect_file(std::string_view file_s)
+void inspect_file(const std::string &file_s)
 {
     std::filesystem::path file_p = file_s;
 
