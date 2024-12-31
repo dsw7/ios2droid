@@ -1,15 +1,15 @@
-.PHONY = help compile clean lint format test py
+.PHONY = help format compile clean lint test py
 .DEFAULT_GOAL = help
 
 define HELP_LIST_TARGETS
+To format code:
+    $$ make format
 To compile binary:
     $$ make compile
 To remove build directory:
     $$ make clean
 To run cppcheck linter:
     $$ make lint
-To format code:
-    $$ make format
 To run unit tests:
     $$ make test
 To lint, analyze and format python code:
@@ -21,7 +21,10 @@ export HELP_LIST_TARGETS
 help:
 	@echo "$$HELP_LIST_TARGETS"
 
-compile:
+format:
+	@clang-format -i --verbose --style=file ios2droid/*.cpp ios2droid/*.hpp
+
+compile: format
 	@cmake -S ios2droid -B build
 	@make --jobs=12 --directory=build install
 
@@ -30,9 +33,6 @@ clean:
 
 lint:
 	@cppcheck ios2droid --enable=all
-
-format:
-	@clang-format -i --verbose --style=file ios2droid/*.cpp ios2droid/*.hpp
 
 test: export PATH_BIN = $(CURDIR)/build/ios2droid
 test: compile
