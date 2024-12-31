@@ -15,15 +15,13 @@ void print_build_information()
 void print_help_messages()
 {
     std::cout
-        << "Usage: ios2droid [OPTIONS] [FILE]\n\n"
+        << "Usage: ios2droid [-h | --help] [-r | --rename] [FILE]\n\n"
            "Options:\n"
            "  -h, --help     Show this help message and exit\n"
            "  -r, --rename   Rename files of iOS origin\n\n"
            "Arguments:\n"
            "  FILE           The file to inspect (optional)\n\n"
            "Examples:\n"
-           "  - \033[2mios2droid [-h | --help]\033[0m\n"
-           "     > Will display this help message\n"
            "  - \033[2mios2droid FILE\033[0m\n"
            "     > To inspect EXIF metadata associated with a file\n"
            "  - \033[2mios2droid\033[0m (no arguments)\n"
