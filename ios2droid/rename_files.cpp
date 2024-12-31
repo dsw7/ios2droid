@@ -106,7 +106,7 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
         return;
     }
 
-    if (payload.make.compare("Apple") != 0) {
+    if (payload.make != "Apple") {
         reporting::print_warning("File did not originate from iOS device. Skipping file");
         return;
     }
