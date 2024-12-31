@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <filesystem>
 #include <fmt/core.h>
-#include <iostream>
 #include <vector>
 
 namespace {
@@ -131,17 +130,17 @@ void rename_files(bool is_dry_run)
     const std::filesystem::path cwd = std::filesystem::current_path();
 
     if (is_dry_run) {
-        std::cout << "> This is a dry run!\n";
-        std::cout << "> Will NOT rename files in directory: " << cwd << '\n';
-        std::cout << "> Run program with -r or --rename to rename files\n";
+        fmt::print("> This is a dry run!\n");
+        fmt::print("> Will NOT rename files in directory: {}\n", cwd.string());
+        fmt::print("> Run program with -r or --rename to rename files\n");
     } else {
-        std::cout << "> Renaming files in directory: " << cwd << '\n';
+        fmt::print("> Renaming files in directory: {}\n", cwd.string());
     }
 
     print_separator();
 
     if (std::filesystem::is_empty(cwd)) {
-        std::cout << "Directory is empty!\n";
+        fmt::print("Directory is empty!\n");
         return;
     }
 
