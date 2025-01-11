@@ -2,8 +2,8 @@
 
 #include <cstdlib>
 #include <errno.h>
+#include <fmt/color.h>
 #include <fmt/core.h>
-#include <iostream>
 #include <optional>
 #include <string.h>
 #include <string>
@@ -30,7 +30,7 @@ namespace reporting {
 void set_target(const std::string &filename)
 {
     if (setenv(TARGET, filename.c_str(), 1) != 0) {
-        std::cerr << strerror(errno) << '\n';
+        fmt::print(stderr, "{}\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
@@ -38,24 +38,27 @@ void set_target(const std::string &filename)
 void unset_target()
 {
     if (unsetenv(TARGET) != 0) {
-        std::cerr << strerror(errno) << '\n';
+        fmt::print(stderr, "{}\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
 
 void print_info(const std::string &message)
 {
-    fmt::print("\033[32m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
+    fmt::print(fg(fmt::terminal_color::green), "[{}] ", get_target().value_or("Unset"));
+    fmt::print("{}\n", message);
 }
 
 void print_warning(const std::string &message)
 {
-    std::cerr << fmt::format("\033[33m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
+    fmt::print(stderr, fg(fmt::terminal_color::yellow), "[{}] ", get_target().value_or("Unset"));
+    fmt::print(stderr, "{}\n", message);
 }
 
 void print_error(const std::string &message)
 {
-    std::cerr << fmt::format("\033[31m[{}]\033[0m {}\n", get_target().value_or("Unset"), message);
+    fmt::print(stderr, fg(fmt::terminal_color::red), "[{}] ", get_target().value_or("Unset"));
+    fmt::print(stderr, "{}\n", message);
 }
 
 } // namespace reporting
