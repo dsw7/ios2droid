@@ -1,14 +1,9 @@
-from functools import cache
-from os import EX_OK, chdir, environ
+from os import EX_OK, chdir
 from pathlib import Path
 from shutil import rmtree, copyfile
 from subprocess import run, PIPE, CompletedProcess
 from unittest import TestCase
-
-
-@cache
-def get_path_to_ios2droid_binary() -> str:
-    return environ["PATH_BIN"]
+from .utils import get_path_to_ios2droid_binary
 
 
 def run_subprocess(args: list[str]) -> CompletedProcess:

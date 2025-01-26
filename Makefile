@@ -36,7 +36,7 @@ lint:
 
 test: export PATH_BIN = $(CURDIR)/build/ios2droid
 test: compile
-	@python3 -m unittest -v tests/test_basic.py
+	@python3 -m unittest -v tests/*.py
 
 py:
 	@python3 -m black tests
