@@ -10,4 +10,4 @@ __pycache__/
 venv
 
 # Ignore easyexif
-libs
+external

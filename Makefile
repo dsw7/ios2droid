@@ -22,17 +22,17 @@ help:
 	@echo "$$HELP_LIST_TARGETS"
 
 format:
-	@clang-format -i --verbose --style=file ios2droid/*.cpp ios2droid/*.hpp
+	@clang-format -i --verbose --style=file src/*.cpp src/*.hpp
 
 compile: format
-	@cmake -S ios2droid -B build
+	@cmake -S src -B build
 	@make --jobs=12 --directory=build install
 
 clean:
 	@rm -rfv build
 
 lint:
-	@cppcheck ios2droid --enable=all
+	@cppcheck src --enable=all
 
 test: export PATH_BIN = $(CURDIR)/build/ios2droid
 test: compile

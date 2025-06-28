@@ -22,8 +22,8 @@ endif()
 
 message(STATUS "Checking for EasyEXIF source files")
 
-set(OUTPUT_CPP "${CMAKE_SOURCE_DIR}/libs/exif.cpp")
-set(OUTPUT_H "${CMAKE_SOURCE_DIR}/libs/exif.h")
+set(OUTPUT_CPP "${CMAKE_SOURCE_DIR}/external/exif.cpp")
+set(OUTPUT_H "${CMAKE_SOURCE_DIR}/external/exif.h")
 
 if(NOT EXISTS ${OUTPUT_CPP})
   message(STATUS "Downloading exif.cpp from EasyEXIF source")
@@ -41,23 +41,18 @@ else()
   message(STATUS "exif.h already exists, skipping download")
 endif()
 
-include_directories(
-  "libs"
-)
+include_directories(external)
 add_executable(
-  "ios2droid"
-  "main.cpp"
-  "help.cpp"
-  "inspect.cpp"
-  "libs/exif.cpp"
-  "rename_files.cpp"
-  "reporting.cpp"
-  "utils.cpp"
+  ios2droid
+  main.cpp
+  help.cpp
+  inspect.cpp
+  external/exif.cpp
+  rename_files.cpp
+  reporting.cpp
+  utils.cpp
 )
-target_link_libraries(
-  "ios2droid"
-  "fmt::fmt"
-)
+target_link_libraries(ios2droid fmt::fmt)
 
 set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/.local")
-install(TARGETS "ios2droid" DESTINATION "bin")
+install(TARGETS ios2droid DESTINATION bin)
