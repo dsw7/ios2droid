@@ -34,6 +34,6 @@ This may provide some additional insight into why a file cannot be renamed.
 ## Setup
 Simply clone this repo, then run:
 ```console
-make compile
+make
 ```
 This program uses [{fmt}](https://github.com/fmtlib/fmt) and this library will need to be installed.
