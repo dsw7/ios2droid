@@ -45,7 +45,6 @@ include_directories(external)
 add_executable(
   ios2droid
   main.cpp
-  help.cpp
   inspect.cpp
   external/exif.cpp
   rename_files.cpp
