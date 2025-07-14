@@ -30,11 +30,11 @@ Arguments:
   FILE          The file to inspect (optional)
 
 Examples:
-  1. Run a dry run. Will not actually rename files:
+  > Run a dry run. Will not actually rename files:
     $ ios2droid (no arguments)
-  2. Rename files in current working directory if satisfied with dry run:
+  > Rename files in current working directory if satisfied with dry run:
     $ ios2droid -r
-  3. To inspect EXIF metadata associated with a file:
+  > To inspect EXIF metadata associated with a file:
     $ ios2droid FILE
 )";
 
