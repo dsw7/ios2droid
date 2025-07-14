@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 project(ios2droid VERSION 1.0.0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 string(TIMESTAMP BUILD_DATE)
 message(STATUS "Will add the following timestamp to binary: ${BUILD_DATE}")
