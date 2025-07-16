@@ -19,8 +19,7 @@ Program also offers a means of inspecting the EXIF metadata
 associated with a photo.
 
 Usage:
-  ios2droid [OPTION]
-  ios2droid FILE
+  ios2droid [OPTIONS] [FILE]
 
 Options:
   -h, --help    Show this help message and exit
@@ -31,7 +30,7 @@ Arguments:
 
 Examples:
   > Run a dry run. Will not actually rename files:
-    $ ios2droid (no arguments)
+    $ ios2droid
   > Rename files in current working directory if satisfied with dry run:
     $ ios2droid -r
   > To inspect EXIF metadata associated with a file:
