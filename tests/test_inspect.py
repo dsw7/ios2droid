@@ -34,6 +34,7 @@ class TestInspectFile(TestCase):
                 "tests/jpg_fake.jpg",
                 "No JPEG markers found in buffer. Is this an image file?",
             ),
+            ("/tmp", "File '/tmp' is not a regular file"),
         ]
 
         for filename, stderr in test_cases:
