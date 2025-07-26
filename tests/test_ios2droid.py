@@ -95,3 +95,15 @@ class TestRename(TestCase):
 
         # Apple originating file should be renamed
         self.assertTrue(Path("20241113_024948.jpg").exists())
+
+    def test_do_not_rename_already_renamed_file(self) -> None:
+        process = run_subprocess(["--rename"])
+        self.assertEqual(process.returncode, EX_OK)
+        self.assertTrue(Path("20241113_024948.jpg").exists())
+
+        # Try a second time...
+        process = run_subprocess(["--rename"])
+        self.assertEqual(process.returncode, EX_OK)
+        self.assertIn(
+            "Filename is already in YYYYMMDD_HHMMSS format", process.stderr.decode()
+        )
