@@ -26,8 +26,8 @@ test: format
 	@cmake -S src -B $(DIR_TEST_BUILD) -DENABLE_COVERAGE=ON
 	@make --jobs=12 --directory=$(DIR_TEST_BUILD)
 	@python3 -m unittest -v tests/*.py
-	@lcov --capture --directory=$(DIR_TEST_BUILD) --output-file $(DIR_TEST_BUILD)/coverage.info
-	@lcov --remove $(DIR_TEST_BUILD)/coverage.info "/usr/*" "*/external/*" --output-file $(DIR_TEST_BUILD)/coverage.info
+	@lcov --quiet --capture --directory=$(DIR_TEST_BUILD) --output-file $(DIR_TEST_BUILD)/coverage.info
+	@lcov --quiet --remove $(DIR_TEST_BUILD)/coverage.info "/usr/*" "*/external/*" --output-file $(DIR_TEST_BUILD)/coverage.info
 	@genhtml $(DIR_TEST_BUILD)/coverage.info --output-directory $(DIR_TEST_BUILD)/coverageResults
 	@echo "See coverage report at: $(DIR_TEST_BUILD)/coverageResults/index.html"
 
