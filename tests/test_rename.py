@@ -109,3 +109,29 @@ class TestRenameDirectory(TestCase):
         process = run_subprocess(["-r"])
         self.assertEqual(process.returncode, 0)
         self.assertIn("Is a directory", process.stderr.decode())
+
+
+class TestNoOverwrite(TestCase):
+    def setUp(self) -> None:
+        if Temp.exists():
+            rmtree(Temp)
+
+        Temp.mkdir()
+        copyfile("tests/jpg_apple.jpg", Temp / "jpg_apple1.jpg")
+        copyfile("tests/jpg_apple.jpg", Temp / "jpg_apple2.jpg")
+        chdir(Temp)
+
+    def tearDown(self) -> None:
+        chdir("..")
+        rmtree(Temp)
+
+    def test_do_not_overwrite_file(self) -> None:
+        process = run_subprocess(["--rename"])
+        self.assertEqual(process.returncode, 0)
+
+        self.assertTrue(Path("20241113_024948.jpg").exists())
+        self.assertTrue(Path("jpg_apple2.jpg").exists())
+        self.assertIn(
+            "'20241113_024948.jpg' already exists. Therefore cannot rename 'jpg_apple2.jpg' to '20241113_024948.jpg'",
+            process.stderr.decode(),
+        )
