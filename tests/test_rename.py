@@ -4,22 +4,22 @@ from shutil import rmtree, copyfile
 from unittest import TestCase
 from .utils import run_subprocess
 
+Temp = Path(".tmp")
+
 
 class TestRename(TestCase):
-    tmpdir = Path(".tmp")
-
     def setUp(self) -> None:
-        if self.tmpdir.exists():
-            rmtree(self.tmpdir)
+        if Temp.exists():
+            rmtree(Temp)
 
-        self.tmpdir.mkdir()
-        copyfile("tests/jpg_android.jpg", self.tmpdir / "jpg_android.jpg")
-        copyfile("tests/jpg_apple.jpg", self.tmpdir / "jpg_apple.jpg")
-        chdir(self.tmpdir)
+        Temp.mkdir()
+        copyfile("tests/jpg_android.jpg", Temp / "jpg_android.jpg")
+        copyfile("tests/jpg_apple.jpg", Temp / "jpg_apple.jpg")
+        chdir(Temp)
 
     def tearDown(self) -> None:
         chdir("..")
-        rmtree(self.tmpdir)
+        rmtree(Temp)
 
     def test_dry_run(self) -> None:
         process = run_subprocess([])
@@ -51,45 +51,61 @@ class TestRename(TestCase):
 
 
 class TestRenameInvalidFile(TestCase):
-    tmpdir = Path(".tmp")
-
     def setUp(self) -> None:
-        if self.tmpdir.exists():
-            rmtree(self.tmpdir)
+        if Temp.exists():
+            rmtree(Temp)
 
-        self.tmpdir.mkdir()
-        copyfile("tests/jpg_fake.jpg", self.tmpdir / "jpg_fake.jpg")
-        chdir(self.tmpdir)
+        Temp.mkdir()
+        copyfile("tests/jpg_fake.jpg", Temp / "jpg_fake.jpg")
+        copyfile("tests/jpg_no_exif_header.jpg", Temp / "jpg_no_exif_header.jpg")
+        chdir(Temp)
 
     def tearDown(self) -> None:
         chdir("..")
-        rmtree(self.tmpdir)
+        rmtree(Temp)
 
     def test_rename(self) -> None:
         process = run_subprocess(["-r"])
         self.assertEqual(process.returncode, 0)
-        self.assertIn(
-            "No JPEG markers found in buffer. Is this an image file?",
-            process.stderr.decode(),
-        )
+        stderr = process.stderr.decode()
+        self.assertIn("No JPEG markers found in buffer. Is this an image file?", stderr)
+        self.assertIn("Could not find EXIF header in file", stderr)
         self.assertTrue(Path("jpg_fake.jpg").exists())
+        self.assertTrue(Path("jpg_no_exif_header.jpg").exists())
 
 
 class TestRenameNoFiles(TestCase):
-    tmpdir = Path(".tmp")
-
     def setUp(self) -> None:
-        if self.tmpdir.exists():
-            rmtree(self.tmpdir)
+        if Temp.exists():
+            rmtree(Temp)
 
-        self.tmpdir.mkdir()
-        chdir(self.tmpdir)
+        Temp.mkdir()
+        chdir(Temp)
 
     def tearDown(self) -> None:
         chdir("..")
-        rmtree(self.tmpdir)
+        rmtree(Temp)
 
     def test_rename(self) -> None:
         process = run_subprocess(["-r"])
         self.assertEqual(process.returncode, 0)
         self.assertIn("Directory is empty!", process.stderr.decode())
+
+
+class TestRenameDirectory(TestCase):
+    def setUp(self) -> None:
+        if Temp.exists():
+            rmtree(Temp)
+
+        Temp.mkdir()
+        (Temp / "foo").mkdir()
+        chdir(Temp)
+
+    def tearDown(self) -> None:
+        chdir("..")
+        rmtree(Temp)
+
+    def test_rename(self) -> None:
+        process = run_subprocess(["-r"])
+        self.assertEqual(process.returncode, 0)
+        self.assertIn("Is a directory", process.stderr.decode())
