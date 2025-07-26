@@ -1,12 +1,30 @@
 cmake_minimum_required(VERSION 3.18)
 project(ios2droid VERSION 1.0.0)
 
+option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/.local/bin")
+set(SRC_FILES
+  main.cpp
+  inspect.cpp
+  external/exif.cpp
+  rename_files.cpp
+  reporting.cpp
+  utils.cpp
+)
 
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+if(ENABLE_COVERAGE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
+
+include_directories(external)
 
 message(STATUS "Locating {fmt} library")
 find_package(fmt)
@@ -36,17 +54,7 @@ else()
   message(STATUS "exif.h already exists, skipping download")
 endif()
 
-include_directories(external)
-add_executable(
-  ios2droid
-  main.cpp
-  inspect.cpp
-  external/exif.cpp
-  rename_files.cpp
-  reporting.cpp
-  utils.cpp
-)
+add_executable(ios2droid ${SRC_FILES})
 target_link_libraries(ios2droid fmt::fmt)
 
-set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/.local")
-install(TARGETS ios2droid DESTINATION bin)
+install(TARGETS ios2droid DESTINATION ${CMAKE_INSTALL_PREFIX})
