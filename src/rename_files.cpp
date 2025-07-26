@@ -140,7 +140,7 @@ void rename_files(bool is_dry_run)
     print_separator();
 
     if (std::filesystem::is_empty(cwd)) {
-        fmt::print("Directory is empty!\n");
+        fmt::print(stderr, "Directory is empty!\n");
         return;
     }
 
