@@ -37,6 +37,20 @@ class TestRename(TestCase):
         # Apple originating file should be renamed
         self.assertTrue(Path("20241113_024948.jpg").exists())
 
+
+class TestRenameIsIdempotent(TestCase):
+    def setUp(self) -> None:
+        if Temp.exists():
+            rmtree(Temp)
+
+        Temp.mkdir()
+        copyfile("tests/jpg_apple.jpg", Temp / "jpg_apple.jpg")
+        chdir(Temp)
+
+    def tearDown(self) -> None:
+        chdir("..")
+        rmtree(Temp)
+
     def test_do_not_rename_already_renamed_file(self) -> None:
         process = run_subprocess(["--rename"])
         self.assertEqual(process.returncode, 0)
@@ -46,7 +60,7 @@ class TestRename(TestCase):
         process = run_subprocess(["--rename"])
         self.assertEqual(process.returncode, 0)
         self.assertIn(
-            "Filename is already in YYYYMMDD_HHMMSS format", process.stderr.decode()
+            "Filename is already in YYYYMMDD_HHMMSS format", process.stdout.decode()
         )
 
 
