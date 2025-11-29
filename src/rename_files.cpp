@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <filesystem>
 #include <fmt/core.h>
+#include <regex>
+#include <string>
 #include <vector>
 
 namespace {
@@ -16,6 +18,13 @@ struct Payload {
     std::string errmsg;
     std::string make;
 };
+
+bool is_yyyymmdd_hhmmss_format(const std::filesystem::path &filepath)
+{
+    std::string filename = filepath.stem().string();
+    static std::regex pattern(R"((\d{4})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(0[0-9]|1[0-9]|2[0-3])([0-5][0-9])([0-5][0-9]))");
+    return std::regex_match(filename, pattern);
+}
 
 std::string convert_ios_to_android_datefmt(const std::string &date_ios)
 {
