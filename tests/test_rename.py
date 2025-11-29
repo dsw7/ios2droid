@@ -38,7 +38,7 @@ class TestRename(TestCase):
         self.assertTrue(Path("20241113_024948.jpg").exists())
 
 
-class TestDoNotRename(TestCase):
+class TestRenameIsIdempotent(TestCase):
     def setUp(self) -> None:
         if Temp.exists():
             rmtree(Temp)
