@@ -108,6 +108,11 @@ void process_file(const std::filesystem::path &old_file, bool is_dry_run)
         return;
     }
 
+    if (is_yyyymmdd_hhmmss_format(old_file)) {
+        reporting::print_info("Filename is already in YYYYMMDD_HHMMSS format");
+        return;
+    }
+
     Payload payload;
 
     if (not parse_date_taken_from_exif(old_file, payload)) {
