@@ -64,7 +64,7 @@ void process_input(const std::optional<std::string> &option)
 
 int main(int argc, char **argv)
 {
-    std::optional<std::string> option = std::nullopt;
+    std::optional<std::string> option;
 
     if (argc > 1) {
         option = argv[1];
